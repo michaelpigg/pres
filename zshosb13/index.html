@@ -1,0 +1,618 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Cool Features of the Z Shell</title>
+
+		<meta name="description" content="">
+		<meta name="author" content="Michael Pigg">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.min.css">
+		<link rel="stylesheet" href="css/theme/default.css" id="theme">
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
+		<script>
+			document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+
+				<section>
+					<h1>Cool Features of the Z Shell</h1>
+				</section>
+                <section>
+                    <h2>Who am I?</h2>
+                    <ul>
+                        <li class="fragment">Consultant with Chariot Solutions</li>
+                        <li class="fragment">Developing complex Java/Scala projects</li>
+                        <li class="fragment">User of zsh for the past year+</li>
+                        <li class="fragment">Using tools like Maven and git at the command line</li>
+                    </ul>
+                </section>
+				<section>
+					<h2>What is the Z Shell?</h2>
+                    <ul>
+                    <li class="fragment">An open-source shell for Linux, BSD, OS X, etc.</li>
+                    <li class="fragment">An alternative to bash, csh, etc.</li>
+                    <li class="fragment">Provides some cool features that I find useful in day-to-day work</li>
+                    </ul>
+				</section>
+                <section>
+                    <h2>Installing zsh 5.x</h2>
+                    <h3 class="fragment">OS X with Homebrew</h3>
+                    <pre class="fragment">% brew install zsh
+% brew install zsh-completions</pre>
+                    <h3 class="fragment">Linux</h3>
+                    <p class="fragment">Install via package manager</p>
+                    <aside class="notes">
+                        this talk is based on zsh 5.x
+                        OS X currently ships with 4.3.11
+                        zsh-completions is optional, but provides Maven and other completions
+                    </aside>
+                </section>
+                <section>
+                    <h2>Do not panic!</h2>
+                    <pre>
+This is the Z Shell configuration function for new users,
+zsh-newuser-install.
+You are seeing this message because you have no zsh startup files
+(the files .zshenv, .zprofile, .zshrc, .zlogin in the directory
+~).  This function can help you with a few settings that should
+make your use of the shell easier.
+
+You can:
+
+(q)  Quit and do nothing.  The function will be run again next time.
+
+(0)  Exit, creating the file ~/.zshrc containing just a comment.
+     That will prevent this function being run again.
+
+(1)  Continue to the main menu.
+
+--- Type one of the keys in parentheses ---
+                    </pre>
+                    <p>Type 'q' to exit setup program</p>
+                </section>
+                <section>
+                    <h2>Cool Features</h2>
+                    <ul>
+                        <li>Autocd</li>
+                        <li>Autocd + cdpath</li>
+                        <li>History search</li>
+                        <li>Useful globbing</li>
+                        <li>Command autocorrect</li>
+                        <li>Command completion</li>
+                        <li>VCS info on command prompt</li>
+                        <li>Themes</li>
+                        <li>Creating completion functions</li>
+                    </ul>
+                </section>
+                <section>
+                    <h2>autocd</h2>
+                    <p>Allows changing directory without typing cd</p>
+                    <p class="fragment">If an entry is not a command, then check if a directory name matches</p>
+                    <p class="fragment">Enable with <pre class="fragment">setopt autocd</pre></p>
+                </section>
+                <section>
+                    <p>Given typical home folders</p>
+                    <pre>
+/Users/MikePigg
+├── Applications
+├── Desktop
+├── Documents
+├── Downloads
+├── Library
+├── Movies
+├── Music
+├── Pictures
+├── Public
+├── Sites
+└── bin
+                    </pre>
+                </section>
+                <section>
+                    <pre>/Users/MikePigg% Desktop</pre>
+                    <pre class="fragment">/Users/MikePigg/Desktop% foo</pre>
+                    <pre class="fragment">/Users/MikePigg/Desktop/foo% ~</pre>
+<pre class="fragment">/Users/MikePigg% Downloads</pre>
+<pre class="fragment">/Users/MikePigg/Downloads% Documents
+zsh: command not found: Documents
+/Users/MikePigg/Downloads%</pre>
+                </section>
+                <section>
+                    <h2>autocd + cdpath</h2>
+                    <p>cdpath provides a list of directories to search for autocd completions</p>
+                    <p class="fragment">I set cdpath to include <ul  class="fragment">
+                        <li>home directory (~)</li>
+                        <li>src directory (~/src)</li>
+                        <li>top-level directories for projects I'm working on</li>
+                    </ul></p>
+                    <pre class="fragment">cdpath=(~ ~/src ~/src/topsecretclient/awesomeproject)</pre>
+                    <aside class="notes">
+                        cdpath is to autocd what path is to executables
+                    </aside>
+                </section>
+                <section>
+                    <h3>Enjoying autocd+cdpath</h3>
+                    <pre class="fragment">/Users/MikePigg% Desktop</pre>
+                    <pre class="fragment">/Users/MikePigg/Desktop% foo </pre>
+                    <pre class="fragment">/Users/MikePigg/Desktop/foo% ~ </pre>
+                    <pre class="fragment">/Users/MikePigg% Downloads </pre>
+                    <pre class="fragment">/Users/MikePigg/Downloads% Documents </pre>
+                    <pre class="fragment">~/Documents </pre>
+                    <pre class="fragment">/Users/MikePigg/Documents% </pre>
+                </section>
+                <section>
+                    <h2>Apache Felix Example</h2>
+                    <p>Felix is Apache's OSGi container implementation</p>
+                    <p class="fragment">OSGi projects are composed of lots of modules</p>
+                    <p class="fragment">A Felix checkout has 59 directories roughly corresponding to modules of the system</p>
+                    <aside class="notes">Apache Felix is similar in many ways to projects I've worked on</aside>
+                </section>
+                <section>
+                    <h3>Felix directories</h3>
+                    <pre>
+.
+├── bundleplugin
+├── bundlerepository
+├── commons
+├── configadmin
+├── coordinator
+├── dependencymanager
+├── deploymentadmin
+├── deviceaccess
+├── doap
+├── eventadmin
+├── examples
+├── fileinstall
+├── framework
+├── framework.security
+├── gogo
+├── http
+├── http.jetty
+├── installers
+├── io
+├── ipojo
+├── javax.servlet
+    .
+    .
+    .
+├── utils
+├── webconsole
+├── webconsole-plugins
+└── wireadmin
+                    </pre>
+                </section>
+                <section>
+                    <p>Add Felix to cdpath</p>
+                    <pre>cdpath=($cdpath ~/src/felix)</pre>
+                    <p class="fragment">Now I can easily jump to Felix</p>
+                    <pre class="fragment">~% felix
+~/src/felix
+felix% </pre>
+                </section>
+                <section>
+                    <p>Jump between subprojects in Felix</p>
+                    <pre class="fragment">felix% gogo
+gogo%</pre>
+                    <pre class="fragment">gogo% http
+~/src/felix/http
+http%</pre>
+                    <pre class="fragment">http% webconsole
+~/src/felix/webconsole
+webconsole%</pre>
+                    <pre class="fragment">webconsole% http/bridge
+~/src/felix/http/bridge
+bridge%</pre>
+                </section>
+                <section>
+                    <h2>Command History</h2>
+                    <p class="fragment">Like other shells, zsh supports command history</p>
+                    <p class="fragment">Up arrow is bound to previous, down arrow to next</p>
+                </section>
+                <section>
+                    <p>zsh allows searching in history for previous uses of same command</p>
+                    <p class="fragment">Enable with</p>
+                    <pre class="fragment">bindkey '^[[A' up-line-or-search
+bindkey '^[[B' down-line-or-search
+</pre>
+                </section>
+                <section>
+                    <p>Simple usage scenario</p>
+                    <pre class="fragment">% mvn test
+[INFO] Scanning for projects...
+                    .
+                    .
+                    .</pre>
+                    <pre class="fragment">% vi FailingTest.java</pre>
+                    <pre class="fragment">% mvn&lt;up arrow&gt;</pre>
+                    <p class="fragment">fills in with</p>
+                    <pre class="fragment">% mvn test</pre>
+                </section>
+                <section>
+                    <h2>Globbing</h2>
+                    <p>zsh supports advanced globbing patterns</p>
+                    <p class="fragment">I particularly like the ** pattern</p>
+                    <p class="fragment">This gives you more power with tools like grep</p>
+                </section>
+                <section>
+                    <p>List all pom files in felix/http</p>
+                    <pre>
+/Users/MikePigg/src/felix% ls http/**/pom.xml
+http/api/pom.xml		http/proxy/pom.xml
+http/base/pom.xml		http/samples/bridge/pom.xml
+http/bridge/pom.xml		http/samples/cometd/pom.xml
+http/bundle/pom.xml		http/samples/filter/pom.xml
+http/cometd/pom.xml		http/samples/whiteboard/pom.xml
+http/jetty/pom.xml		http/sslfilter/pom.xml
+http/parent/pom.xml		http/whiteboard/pom.xml
+http/pom.xml
+                    </pre>
+                </section>
+                <section>
+                    <p>Find all POMs in felix/http that are using SNAPSHOT versions</p>
+                    <pre>
+/Users/MikePigg/src/felix% grep SNAPSHOT http/**/pom.xml
+http/api/pom.xml:        <version>1-SNAPSHOT</version>
+http/api/pom.xml:    <version>2.2.1-SNAPSHOT</version>
+http/base/pom.xml:        <version>1-SNAPSHOT</version>
+http/base/pom.xml:    <version>2.2.1-SNAPSHOT</version>
+http/bridge/pom.xml:        <version>1-SNAPSHOT</version>
+http/bridge/pom.xml:    <version>2.2.1-SNAPSHOT</version>
+                        .
+                        .
+                        .
+http/samples/bridge/pom.xml:    <version>2.2.1-SNAPSHOT</version>
+http/samples/cometd/pom.xml:        <version>1-SNAPSHOT</version>
+http/samples/cometd/pom.xml:    <version>2.2.1-SNAPSHOT</version>
+http/samples/filter/pom.xml:        <version>1-SNAPSHOT</version>
+http/samples/filter/pom.xml:    <version>2.2.1-SNAPSHOT</version>
+http/samples/whiteboard/pom.xml:        <version>1-SNAPSHOT</version>
+http/samples/whiteboard/pom.xml:    <version>2.2.1-SNAPSHOT</version>
+http/sslfilter/pom.xml:    <version>0.0.1-SNAPSHOT</version>
+http/whiteboard/pom.xml:        <version>1-SNAPSHOT</version>
+http/whiteboard/pom.xml:    <version>2.2.1-SNAPSHOT</version>
+                    </pre>
+                </section>
+            <section>
+                <h2>Command Autocorrect</h2>
+                <p>When an entry looks like it might be a mistyped command, zsh will offer to correct it</p>
+                <p>enabled with <pre>setopt correct</pre></p>
+            </section>
+            <section>
+                <p>Autocorrect for the save</p>
+                <pre>
+/Users/MikePigg/src/felix/http% mnv compile
+zsh: correct 'mnv' to 'mvn' [nyae]? y
+                </pre>
+            </section>
+            <section>
+                <h2>Completion Features</h2>
+                <p>zsh has rich support for completing
+                    <ul class="fragment">
+                        <li>directory and file names</li>
+                        <li>commands and executable files</li>
+                        <li>arguments to commands</li>
+                    </ul>
+                </p>
+            </section>
+                <section>
+                    <p>Customizing completion presentation</p>
+                    <pre>
+zstyle ":completion:*:descriptions" format "%B%d%b"
+zstyle ':completion:*' group-name ''
+                    </pre>
+                    <p class="fragment">Show me a description of each type of completion</p>
+                    <p class="fragment">Keep commands with their type</p>
+                </section>
+                <section>
+                    <p>Showing completion descriptions and groups</p>
+                    <img src="compgroups.png"/>
+                </section>
+                <section>
+                    <h2>Menu Selection</h2>
+                    <p>On second completion request goes into an interactive menu mode</p>
+                    <p class="fragment">Arrow keys can be used to select a completion</p>
+                    <p class="fragment">Enabled with <pre class="fragment">
+zmodload zsh/complist
+zstyle ':completion*:default' menu 'select=0'
+                    </pre></p>
+                </section>
+                <section>
+                    <img src="compmenu.png"/>
+                </section>
+                <section>
+                    <h2>Command completions</h2>
+                    <p>zsh has extensive support for completing command parameters in many programs</p>
+                    <p class="fragment">zsh-completions provides support for more external programs such as Maven</p>
+                </section>
+                <section>
+                    <p>Basic Maven completion</p>
+                    <pre>
+% mvn &lt;tab&gt;
+phase
+clean             -- remove all files generated by the previous build
+compile           -- compile the source code of the project
+deploy            -- done in an integration or release environment, copies the
+install           -- install the package into the local repository, for use as
+integration-test  -- process and deploy the package if necessary into an enviro
+package           -- take the compiled code and package it in its distributable
+site              -- generates the projects site documentation
+site-deploy       -- deploys the generated site documentation to the specified
+test              -- run tests using a suitable unit testing framework
+verify            -- run any checks to verify the package is valid and meets qu
+                    </pre>
+                </section>
+                <section>
+                    <pre>
+                        <p>Filling in Maven projects for pl parameter</p>
+% mvn compile -pl http&lt;tab&gt;
+project
+http                     http/jetty               http/samples/whiteboard
+http/api                 http/parent              http/sslfilter
+http/base                http/proxy               http/whiteboard
+http/bridge              http/samples/bridge      httplite
+http/bundle              http/samples/cometd      httplite/complete
+http/cometd              http/samples/filter      httplite/core
+                    </pre>
+                </section>
+                <section>
+                    <h2>Using completions for other commands</h2>
+                    <p>suppose we create a script called mvnbuild that has <pre>mvn clean install $@</pre></p>
+                    <p class="fragment">Now we've lost command completion for maven - all we get is file completion</p>
+                    <p class="fragment">It would be nice to use the command completion for mvn with this command</p>
+                </section>
+                <section>
+                    <p>compdef lets us tell the completion system what completion function to use for mvnbuild</p>
+                    <pre>
+% compdef _mvn mvnbuild
+% mvnbuild -pl http
+project
+http                     http/jetty               http/samples/whiteboard
+http/api                 http/parent              http/sslfilter
+http/base                http/proxy               http/whiteboard
+http/bridge              http/samples/bridge      httplite
+http/bundle              http/samples/cometd      httplite/complete
+http/cometd              http/samples/filter      httplite/core
+                    </pre>
+                </section>
+                <section>
+                    <h2>Completing OS X Applications</h2>
+                    <p>Using the open command to open test.txt</p>
+                    <pre>open test.txt</pre>
+                    <p class="fragment">By default, it will open in TextEdit</p>
+                    <pre class="fragment">
+% open test.txt -a Ma&lt;tab&gt;
+Mac OS X application
+MacVim             MakePDF            ManagedClient      Match
+Mail               MallocDebug        MassStorageCamera</pre>
+                </section>
+                <section>
+                    <h2>Completing Branch Name for git</h2>
+                    <p>Felix has long branch names with pattern 'org.apache.felix.*'</p>
+                    <pre>
+felix% git checkout o&lt;tab&gt;rg.apache.felix.&lt;tab&gt;
+org.apache.felix.framework-1.2.1
+org.apache.felix.framework-1.8.0
+org.apache.felix.framework-1.8.1-RC
+org.apache.felix.framework-2.0.5-RC
+org.apache.felix.framework-3.0.8-RC
+org.apache.felix.framework-4.0.3-RC
+org.apache.felix.main-1.2.1
+org.apache.felix.main-1.8.0
+org.apache.felix.main-1.8.1-RC
+org.apache.felix.main-2.0.5-RC
+org.apache.felix.main-3.0.8-RC
+org.apache.felix.main-4.0.3-RC
+org.apache.felix.main.distribution-2.0.5-RC
+org.apache.felix.main.distribution-3.0.8-RC
+org.apache.felix.main.distribution-4.0.3-RC</pre>
+                </section>
+            <section>
+                <h2>Creating Custom Completions</h2>
+                <p>Suppose I need to clone git repos from <ul class="fragment"><li>Github</li><li>A private git server</li></ul></p>
+                <p class="fragment">I'd like to not have to type out the common URL each time (https://github.com/)</p>
+                <p class="fragment">One way to address this is to set up a completion function for git clone</p>
+            </section>
+            <section>
+                <h3>Step One</h3>
+                <p>Create a shell function shortcut</p>
+                <p class="fragment">shorter</p>
+                <p class="fragment">won't have collisions with existing git completion</p>
+                <pre>
+gcl () {
+	git clone "$@"
+}
+                </pre>
+            </section>
+            <section>
+                <h3>Step Two</h3>
+                <p>Define a completion function for gcl in a file called _gcl</p>
+                <p>must be on fpath</p>
+                <pre>
+#compdef gcl
+
+_arguments ":clone repo:(${GCL_URLS})"
+                </pre>
+            </section>
+            <section>
+                <h3>Step Three</h3>
+                <p>Add urls</p>
+                <pre>GCL_URLS=(https://github.com/ https://bitbucket.org/)</pre>
+            </section>
+            <section>
+                <h3>Step Four</h3>
+                <p>Use it!</p>
+                <pre>
+src % gcl &lt;tab&gt;
+                </pre>
+                <pre>
+src % gcl https://&lt;tab&gt;
+clone repo
+https://bitbucket.org/  https://github.com/
+                </pre>
+            </section>
+            <section>
+                <h2>VCS Info</h2>
+            </section>
+            <section>
+                <h3>vcs_info module</h3>
+                <p>Supports git, svn, hg, etc.</p>
+                <p>Allows customizing command line with useful info<ul>
+                <li class="fragment">current branch</li>
+                <li class="fragment">state indication (staged, unstaged, etc.)</li>
+                </ul></p>
+            </section>
+            <section>
+                <h3>Basic VCS info on left</h3>
+                <p>%b in formats = current branch name</p>
+                <pre>
+setopt prompt_subst
+autoload -Uz vcs_info
+zstyle ':vcs_info:*' enable git svn
+zstyle ':vcs_info:*' formats '[%b]'
+precmd() { vcs_info }
+PROMPT='%c ${vcs_info_msg_0_}%# '
+                </pre>
+                <img src="basicvcsinfoleft.png"/>
+            </section>
+             <section>
+                 <h3>Basic VCS info on right</h3>
+                 <pre>
+PROMPT='%c%# '
+RPROMPT='${vcs_info_msg_0_}'
+             </pre>
+             <img src="basicvcsinforight.png"/>
+             </section>
+             <section>
+                 <h3>Add some color</h3>
+                 <p>%F = start foreground color</p>
+                 <p>%f = end coloring</p>
+                 <pre>zstyle ':vcs_info:*' formats '%F{5}[%F{2}%b%F{5}]%f'</pre>
+                 <img src="basicvcsinfocolor.png"/>
+             </section>
+             <section>
+                 <h3>Add VCS state in git</h3>
+                 <p>Shows us when we have staged, unstaged, or untracked files in the repo</p>
+                 <pre>zstyle ':vcs_info:*' stagedstr 'M'
+zstyle ':vcs_info:*' unstagedstr 'U'
+zstyle ':vcs_info:*' check-for-changes true
+zstyle ':vcs_info:git*+set-message:*' hooks git-untracked
++vi-git-untracked() {
+    if [[ $(git rev-parse --is-inside-work-tree 2> /dev/null) == 'true' ]] && \
+        git status --porcelain  | grep '??' &> /dev/null; then
+        hook_com[unstaged]+='%F{1}??%f'
+    fi
+}
+zstyle ':vcs_info:*' formats '%F{5}[%F{2}%b%F{5}] %F{2}%c%F{3}%u%f'
+zstyle ':vcs_info:*' actionformats '%F{5}[%F{2}%b%F{3}|%F{1}%a%F{5}]%f'
+                 </pre>
+                 <small>Thanks Christopher!: http://stackoverflow.com/a/12935606/576077</small>
+             </section>
+             <section>
+                 <p>untracked file</p>
+                 <img src="vcsstateuntracked.png"/>
+                 <p>staged file</p>
+                 <img src="vcsstatestaged.png"/>
+                 <p>modified file</p>
+                 <img src="vcsstatemodified.png"/>
+             </section>
+             <section>
+                 <h2>Themes</h2>
+             </section>
+             <section>
+                 <h3>promptinit</h3>
+                 <pre>
+$ autoload -U promptinit
+$ promptinit
+                 </pre>
+             </section>
+             <section>
+                 <pre>~% prompt&lt;tab&gt;
+prompt theme
+adam1    bart     clint    elite2   fire     oliver   redhat   walters
+adam2    bigfade  elite    fade     off      pws      suse     zefram</pre>
+             </section>
+            <section>
+                <h3>check 'em out</h3>
+                <img src="themes.png"/>
+            </section>
+            <section>
+                <h2>Configuring zsh</h2>
+                <ul>
+                    <li class="fragment">https://github.com/michaelpigg/dotfiles</li>
+                    <li class="fragment">https://github.com/holman/dotfiles</li>
+                    <li class="fragment">https://github.com/robbyrussell/oh-my-zsh</li>
+                </ul>
+            </section>
+            <section>
+                <h2>More Resources</h2>
+                <ul>
+                    <li>Book: From Bash to Z Shell; Kiddle, et. al.</li>
+                    <li>https://github.com/grml/zsh-lovers</li>
+                    <li>http://zsh.sourceforge.net/</li>
+                </ul>
+            </section>
+            <section>
+                <h2>Thanks!</h2>
+                <p>Michael Pigg</p>
+                <p>@mikepigg</p>
+                <p>@ChariotSolution</p>
+                <p>@techcast</p>
+            </section>
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+					// { src: 'plugin/search/search.js', async: true, condition: function() { return !!document.body.classList; } }
+					// { src: 'plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
