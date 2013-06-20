@@ -1,4 +1,4 @@
-pres
+My Presentations
 ====
 
-Presentations
+My repository of presentations
