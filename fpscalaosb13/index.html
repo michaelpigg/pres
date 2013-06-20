@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Functional Programming in Scala</title>
+
+		<meta name="description" content="">
+		<meta name="author" content="Michael Pigg">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.min.css">
+		<link rel="stylesheet" href="css/theme/default.css" id="theme">
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
+		<script>
+			document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+
+				<section>
+					<h1>Functional Programming in Scala</h1>
+				</section>
+
+                <section>
+                    <h2>Who am I?</h2>
+                    <ul>
+                        <li class="fragment">Consultant with Chariot Solutions</li>
+                        <li class="fragment">Working in Java and Scala projects</li>
+                        <li class="fragment">Typesafe Scala instructor</li>
+                    </ul>
+                </section>
+                    <section>
+    					<h2>What is Functional Programming?</h2>
+                    </section>
+                    <section>
+                        <h3>A style of programming in which</h3>
+                        <p class="fragment">functions are first class</p>
+                        <p class="fragment">functions are free of side effects</p>
+                        <p class="fragment">data is immutable</p>
+                    </section>
+                    <section>
+                        <h3>Scala</h3>
+                        <p>A JVM-based hybrid language that supports both object-oriented and functional paradigms</p>
+                    </section>
+                    <section>
+                        <h2>Scala Basics</h2>
+                    </section>
+                    <section>
+                        <h3>Variables</h3>
+                        <pre><code>val j = 2</code></pre>
+                        <ul class="fragment">
+                            <li>Assigned value 2 to a variable named j</li>
+                            <li>j is immutable - cannot be assigned to again</li>
+                        </ul>
+                        <pre class="fragment"><code>val msg = "Hello World!"</code></pre>
+                        <ul>
+                            <li class="fragment">Assigned string to variable named msg</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3>Simplest function</h3>
+                        <pre><code>val simplest = () => "Hello World!"
+simplest: () => String = &lt;function0&gt;
+                        </code></pre>
+                        <ul>
+                            <li>no arguments</li>
+                            <li>constant return value</li>
+                            <li>function is assigned to variable named simplest</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <pre>simplest()
+res0: String = Hello World!</pre>
+                    </section>
+                    <section>
+                        <h3>Identity Function</h3>
+                        <pre><code>val identity = (x: Any) => x</code></pre>
+                        <ul>
+                            <li>single argument of any type</li>
+                            <li>returns argument</li>
+                            <li>function is assigned to varaible named identity</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <pre>identity(3)
+res2: Any = 3
+identity("Hello World!")
+res3: Any = Hello World!
+                        </pre>
+                    </section>
+                    <section>
+                        <h3>Add one</h3>
+                        <pre><code>val addOne = (j: Int) => j + 1</code></pre>
+                        <ul>
+                            <li>single argument of type Int</li>
+                            <li>returns a value of type Int</li>
+                            <li>function is assigned to variable named addOne</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <pre><code>addOne(1)
+res5: Int = 2</code></pre>
+                    </section>
+                    <section><h2>Collections</h2></section>
+                    <section>
+                        <h3>Scala has a rich collections library</h3>
+                        <ul>
+                            <li>Seq (List, Vector)</li>
+                            <li>Set</li>
+                            <li>Map</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3>Making a Seq or Set</h3>
+                        <pre><code>Vector(1, 2, 3, 4, 5)
+Set("Apple", "Samsung", "HTC")</code></pre>
+                    </section>
+                    <section>
+                        <h3>Making a Map</h3>
+                        <ul>
+                            <li>Map is a collection of key and value pairs</li>
+                            <li class="fragment">key -> value</li>
+                        </ul>
+                        <pre class="fragment"><code>Map("Apple" -> "iPhone", "Samsung" -> "Galaxy", "HTC" -> "One"</code></pre>
+                    </section>
+                    <section>
+                        <h3>Immutable Collections</h3>
+                        <ul>
+                            <li class="fragment">Collections are immmutable by default</li>
+                            <li class="fragment">Changing the collection actually returns a new collection</li>
+                            <li class="fragment">Original collection is unmodified</li>
+                        </ul>
+                    </section>
+                    <section><h2>Higher Order Functions</h2></section>
+                    <section><h3>Higher Order Functions</h3>
+                        <ul>
+                            <li>Take a function as an argument</li>
+                            <li>Can return a function result</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3>HOF and Collections</h3>
+                        <p>Collections have lots of useful HOF</p>
+                        <ul>
+                            <li>filter, exists, find</li>
+                            <li>group</li>
+                            <li>map</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3>filter</h3>
+                        <ul>
+                            <li class="fragment">Takes a predicate function of type <pre><code>(A) => Boolean</code></pre></li>
+                            <li class="fragment">Applies it to all elements of collection</li>
+                            <li class="fragment">Produces a collection that contains elements from original collection where the predicate returns true</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <pre><code>
+scala> val nums = Vector(1,2,3,4,5)
+nums: scala.collection.immutable.Vector[Int] = Vector(1, 2, 3, 4, 5)
+
+scala> nums.filter((x:Int) => x > 3)
+res20: scala.collection.immutable.Vector[Int] = Vector(4, 5)
+                        </code></pre>
+                    </section>
+                    <section>
+                        <pre><code>
+scala> val fruits = List("orange", "bannana", "pear", "peach")
+fruits: List[String] = List(orange, bannana, pear, peach)
+
+scala> fruits.filter((f: String) => f(0) == 'p')
+res19: List[String] = List(pear, peach)
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h3>map</h3>
+                        <ul>
+                            <li class="fragment">Takes a function <pre>(elem: A) => B</pre> as an argument</li>
+                            <li class="fragment">Applies it to all elements of the collection</li>
+                            <li class="fragment">Produces a new collection that contains the results of applying the function</li>
+                        </ul>
+                    </section>
+                    <section>
+                    <pre><code data-trim>
+scala> val nums = Vector(1,2,3,4,5)
+nums: scala.collection.immutable.Vector[Int] = Vector(1, 2, 3, 4, 5)
+
+scala> nums.map((x: Int) => x + 1)
+res6: scala.collection.immutable.Vector[Int] = Vector(2, 3, 4, 5, 6)
+                    </code></pre>
+                    </section>
+                    <section><h2>Why do it this way?</h2></section>
+                    <section>
+                        <h3>Compare</h3>
+                        <pre><code>public List&lt;Integer&gt; addOne(List&lt;Integer&gt; in) {
+    List&lt;Integer&gt; out = new ArrayList&lt;Integer&gt;();
+    for (Integer i : in) {
+        out.add(i + 1);
+    }
+    return out;
+}
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h3>Internal vs. External Iteration</h3>
+                        <p>We don't tell the computer how to iterate the collection</p>
+                        <p>We just say how we want the collection transformed</p>
+                        <small>http://cr.openjdk.java.net/~briangoetz/lambda/sotc3.html</small>
+                    </section>
+                    <section>
+                        <h3 class="fragment">Improved testability</h3>
+                        <h3 class="fragment">Improved reusability</h3>
+                        <h3 class="fragment">Easy to change iteration approach</h3>
+                    </section>
+                    <section><h3>Exploring Parallel Collections</h3></section>
+                    <section>
+                        <p>Can get a parallel implementation of a collection by calling <code>par</code> on a collection</p>
+                        <pre><code>
+scala> nums.par
+res7: scala.collection.parallel.immutable.ParVector[Int] =
+                            ParVector(1, 2, 3, 4, 5)</code></pre>
+                    </section>
+                    <section>
+                        <h3>Parallel Collections</h3>
+                        <p class="fragment">parallel collections are a basic implementation based on fork/join framework</p>
+                        <p class="fragment">operations are performed by splitting work across multiple threads</p>
+                        <p class="fragment">may reduce wall time of operations compared to standard processing</p>
+                    </section>
+                    <section>
+                        <h3>Imagine we have queue of work to do</h3>
+                        <p class="fragment">This work is computationally intensive</p>
+                        <p class="fragment">Will use naive fibonnaci algorithm for example</p>
+                        <p class="fragment">The work is to find fibonnaci number for a Vector of numbers</p>
+                    </section>
+                    <section>
+                        <p>defining fib</p>
+                        <pre><code>
+def fib(n:Int):Int = if (n == 0) 0 else if (n == 1) 1 else fib(n-1) + fib(n-2)
+fib: (n: Int)Int
+                        </code></pre>
+                        <p class="fragment">try it out</p>
+                        <pre class="fragment"><code>
+scala> fib(20)
+res0: Int = 6765
+                        </code></pre>
+                        <p class="fragment">agrees with Wikipedia</p>
+                    </section>
+                    <section>
+                        <h3>How long does it take?</h3>
+                        <pre><code>def profile[R](code: => R, t: Long = System.currentTimeMillis) =
+    (code, System.currentTimeMillis - t)
+                        </code></pre>
+                        <small>wrick on StackOverflow, http://stackoverflow.com/a/14574121/576077</small>
+                    </section>
+                    <section>
+                        <h3>Tuples</h3>
+                        <ul>
+                            <li>A container for an arbitrary number of items</li>
+                            <li>Items can be of different types</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <p>Tuple Examples</p>
+                        <pre><code>scala> val a = (1,3)
+a: (Int, Int) = (1,3)
+
+scala> val b = (1, "foo", 2.0)
+b: (Int, String, Double) = (1,foo,2.0)</code></pre>
+                    </section>
+                    <section>
+                        <h3>Extracting Tuple Values</h3>
+                        <pre><code>scala> val data = ("foo", 3)
+data: (String, Int) = (foo,3)
+
+scala> val (msg, num) = data
+msg: String = foo
+num: Int = 3
+                        </code></pre>
+                    </section>
+                    <section>
+                        <pre><code data-trim>
+scala> val (result, time) = profile {fib(30)}
+result: Int = 832040
+time: Long = 5
+
+scala> val (result, time) = profile {fib(40)}
+result: Int = 102334155
+time: Long = 622
+
+scala> val (result, time) = profile {fib(45)}
+result: Int = 1134903170
+time: Long = 6271
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h3>Process a queue of work</h3>
+                        <pre><code>
+scala> val (result, time) = profile {Vector(43,43,43,43).map(fib(_))}
+result: scala.collection.immutable.Vector[Int] = Vector(433494437, 433494437, 433494437, 433494437)
+time: Long = 9579
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h3>Now use a parallel collection</h3>
+                        <pre><code>
+scala> val (result, time) = profile {Vector(43,43,43,43).par.map(fib(_))}
+result: scala.collection.parallel.immutable.ParVector[Int] = ParVector(433494437, 433494437, 433494437, 433494437)
+time: Long = 4890
+                        </code></pre>
+                    </section>
+                <section>
+                    <h2>Resources</h2>
+                    <p>Functional Programming in Scala, Chiusano & Bjarnason</p>
+                    <p>Functional Programming Patterns in Scala and Clojure, Bevilacqua-Linn</p>
+                </section>
+                <section>
+                    <h2>Thanks!</h2>
+                    <p>Michael Pigg</p>
+                    <p>@mikepigg</p>
+                    <p>@ChariotSolution</p>
+                    <p>@techcast</p>
+                </section>
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+					// { src: 'plugin/search/search.js', async: true, condition: function() { return !!document.body.classList; } }
+					// { src: 'plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
